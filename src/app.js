@@ -15,8 +15,8 @@ const cookieParser = require("cookie-parser");
 
 app.use(morgan("tiny")); 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://forntend-seven.vercel.app'],
-  credentials: true,
+  origin: ['http://localhost:5173', 'https://forntend-seven.vercel.app'], // ✅ correct spelling, no slash at end
+  credentials: true
 }));
 
 
