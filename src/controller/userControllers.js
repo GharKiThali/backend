@@ -143,13 +143,13 @@ const userLogin = async (req, res) => {
       console.log("login failed: password mismatched");
       return res.status(401).json({ message: "Invalid email or password" });
     }
-
+    console.log(userExists , userExists._id);
+    
     const token = jwt.sign({ id: userExists._id }, process.env.JWT_SEC, { expiresIn: "1d" });
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: "none",
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 

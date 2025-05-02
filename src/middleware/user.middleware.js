@@ -4,8 +4,7 @@ const author = async (req, res, next) => {
     try {
         
         const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
-        console.log(req.headers);
-        
+        console.log(token);
 
         if (!token) {
             return res.status(401).json({ message: "Unauthorized. Token missing." });
@@ -21,8 +20,6 @@ const author = async (req, res, next) => {
 
        
         req.user = decoded;
-        console.log("Decoded user:", decoded);
-
         next();
     } catch (error) {
         console.error("Authorization error:", error);

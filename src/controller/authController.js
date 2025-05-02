@@ -45,12 +45,6 @@ exports.sendOTP = async (req, res) => {
 exports.verifyOTP = (req, res) => {
   const { email, otp } = req.body;
 
-console.log(email,otp,otpStore[email],otpStore[email]);
-
-
-
-
-
   if (otpStore[email] && otpStore[email] == otp) {
     res.send({ message: 'OTP verified successfully!' });
   } else {
