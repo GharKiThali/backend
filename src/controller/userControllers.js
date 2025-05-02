@@ -183,4 +183,20 @@ const sendOtp = async (req, res) => {
   }
 };
 
-module.exports = { register, userLogin, sendOtp, verifyOtp };
+
+//validate
+// Node.js + Express (example)
+const validate =  (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.status(401).json({ isLoggedIn: false });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.status(200).json({ isLoggedIn: true, user: decoded });
+  } catch (err) {
+    res.status(401).json({ isLoggedIn: false });
+  }
+};
+
+
+module.exports = { register, userLogin, sendOtp, verifyOtp,validate };
