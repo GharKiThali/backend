@@ -22,8 +22,8 @@ router.get("/getuser", author, async (req, res) => {
 
 
 
-router.post('/logout', (req, res) => {
-    res.clearCookie('token', { httpOnly: true, secure: false, sameSite: 'lax' }); // Clear the cookie
+router.get('/logout', (req, res) => {
+    res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'None' }); // Clear the cookie
     res.status(200).json({ message: 'Logged out successfully' });
 });
 
