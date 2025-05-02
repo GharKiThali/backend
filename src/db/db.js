@@ -1,14 +1,15 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-function connect(){
-    mongoose.connect('mongodb://0.0.0.0/node')
-    .then(() =>{
-        console.log('connected to db'); 
+function connect() {
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+      console.log('✅ Connected to MongoDB');
     })
-    .catch(err =>{
-        console.log(err);
-    })
+    .catch(err => {
+      console.error('❌ MongoDB connection error:', err.message);
+    });
 }
 
-
 module.exports = connect;
+
