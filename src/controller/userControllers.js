@@ -21,13 +21,13 @@ transporter.verify((error, success) => {
   if (error) {
     console.error("SMTP Connection Error:", error);
   } else {
-    console.log("SMTP Server is ready to send messages!",success);
+    console.log("SMTP Server is ready to send messages!", success);
   }
 });
 
 
 // OTP expiration time (5 minutes)
-const OTP_EXPIRATION_TIME = 5 * 60 * 1000; 
+const OTP_EXPIRATION_TIME = 5 * 60 * 1000;
 
 // Function to generate a 6-digit OTP
 const generateOtp = () => {
@@ -100,7 +100,7 @@ const verifyOtp = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-      console.log("User otp1:", user.otp); // Log the user object for debugging
+    console.log("User otp1:", user.otp); // Log the user object for debugging
     if (user.otp !== otp) {
       return res.status(400).json({ message: "Invalid OTP" });
     }
@@ -121,48 +121,49 @@ const verifyOtp = async (req, res) => {
 };
 
 // User Login ✅
-const userLogin = async (req, res) => {
-  const { email, password } = req.body;
+  const userLogin = async (req, res) => {
+    const { email, password } = req.body;
 
-  try {
-    const userExists = await userModel.findOne({ email });
+    try {
+      const userExists = await userModel.findOne({ email });
 
-    if (!userExists) {
-      console.log("login failed: user not found");
-      return res.status(401).json({ message: "Invalid email or password" });
+      if (!userExists) {
+        console.log("login failed: user not found");
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
+
+      if (!userExists.isVerified) {
+        console.log("login failed: user not verified");
+        return res.status(401).json({ message: "Please verify your email first" });
+      }
+
+      const isMatch = await bcrypt.compare(password, userExists.password);
+
+      if (!isMatch) {
+        console.log("login failed: password mismatched");
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
+      console.log(userExists, userExists._id);
+
+      const token = jwt.sign({ id: userExists._id }, process.env.JWT_SEC, { expiresIn: "1d" });
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      res.status(200).json({
+        message: "Login successful",
+        token,
+        user: { id: userExists._id, fullname: userExists.fullname, email: userExists.email },
+      });
+    } catch (error) {
+      console.error("Login Error:", error);
+      res.status(500).json({ message: "Something went wrong!" });
     }
-
-    if (!userExists.isVerified) {
-      console.log("login failed: user not verified");
-      return res.status(401).json({ message: "Please verify your email first" });
-    }
-
-    const isMatch = await bcrypt.compare(password, userExists.password);
-
-    if (!isMatch) {
-      console.log("login failed: password mismatched");
-      return res.status(401).json({ message: "Invalid email or password" });
-    }
-    console.log(userExists , userExists._id);
-    
-    const token = jwt.sign({ id: userExists._id }, process.env.JWT_SEC, { expiresIn: "1d" });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    res.status(200).json({
-      message: "Login successful",
-      token,
-      user: { id: userExists._id, fullname: userExists.fullname, email: userExists.email },
-    });
-  } catch (error) {
-    console.error("Login Error:", error);
-    res.status(500).json({ message: "Something went wrong!" });
-  }
-};
+  };
 
 // Send OTP manually if needed
 const sendOtp = async (req, res) => {
