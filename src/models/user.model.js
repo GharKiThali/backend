@@ -14,22 +14,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  dob: {
-    type: String, // Format: YYYY-MM-DD or as string
-    default: ''
-  },
-  profileImage: {
-    type: String, // URL or base64 string
-    default: ''
-  },
-  phone: {
-    type: String,
-    default: ''
-  },
-  address: {
-    type: String,
-    default: ''
-  },
+ 
   otp: {
     type: String, // To store OTP when sent for verification
     default: ''

@@ -8,6 +8,12 @@ const paymentModel = mongoose.Schema({
     adhar:String,
     email:String,
     addres:String,
+    occupation:String,
+    street:String ,
+    city: String,
+    state: String,
+    pincode: String,
+    gender: String,
     orderId:{
         type:String,
         required:true,

@@ -188,10 +188,12 @@ const sendOtp = async (req, res) => {
 // Node.js + Express (example)
 const validate =  (req, res) => {
   const token = req.cookies.token;
+  console.log(req.cookies.token);
+  
   if (!token) return res.status(401).json({ isLoggedIn: false });
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SEC);
     res.status(200).json({ isLoggedIn: true, user: decoded });
   } catch (err) {
     res.status(401).json({ isLoggedIn: false });
