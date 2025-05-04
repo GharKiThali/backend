@@ -14,8 +14,19 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser"); 
 
 app.use(morgan("tiny")); 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://forntend-oygr.vercel.app'
+];
+
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://forntend-oygr.vercel.app'],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 }));
 
