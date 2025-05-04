@@ -52,7 +52,7 @@ const paymentcreate = async (req, res) => {
 const paymentverify = async (req, res) => {
     const { razorpayOrderId, razorpayPaymentId, signature } = req.body;
     console.log(req.body);
-    const secret = 'FOGf9BnBbJH8NkzJayKGD47s';
+    const secret = process.env.RAZORPAY_KEY_SECRET.trim();
 
     try {
         const { validatePaymentVerification } = require('razorpay/dist/utils/razorpay-utils');
