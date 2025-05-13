@@ -17,7 +17,8 @@ app.use(morgan("tiny"));
 const allowedOrigins = [
   'http://localhost:5173',
   'https://forntend-oygr.vercel.app',
-  'https://frontend-one-blond-99.vercel.app'
+  'https://frontend-one-blond-99.vercel.app',
+  'https://www.aviyuktngo.org',
 ];
 
 app.use(cors({
