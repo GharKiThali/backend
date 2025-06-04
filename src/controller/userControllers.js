@@ -26,6 +26,7 @@ transporter.verify((error, success) => {
 });
 
 
+
 // OTP expiration time (5 minutes)
 const OTP_EXPIRATION_TIME = 5 * 60 * 1000;
 
@@ -50,6 +51,9 @@ const sendOtpEmail = async (email, otp) => {
     console.error("Error sending OTP email:", error);
   }
 };
+
+
+
 
 // User Registration ✅
 const register = async (req, res) => {
